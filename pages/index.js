@@ -1,15 +1,42 @@
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import Seo from '../components/Seo';
 
 const IMG_URL = `https://image.tmdb.org/t/p/w500`;
 
 export default function Home({ movies }) {
+  const router = useRouter();
+  const handleClick = (id, title) => () => {
+    router.push(
+      {
+        pathname: `/movies/${id}`,
+        query: { title },
+      },
+      `/movies/${id}`
+    );
+  };
   return (
     <div className="container">
       <Seo title="Home" />
       {movies?.map(({ id, original_title, poster_path }) => (
-        <div key={id} className="movie">
+        <div
+          key={id}
+          className="movie"
+          onClick={handleClick(id, original_title)}
+        >
           <img src={`${IMG_URL}/${poster_path}`} />
-          <h4>{original_title}</h4>
+          <h4>
+            <Link
+              href={{
+                pathname: `/movies/${id}`,
+                query: {
+                  title: original_title,
+                },
+              }}
+            >
+              <a>{original_title}</a>
+            </Link>
+          </h4>
         </div>
       ))}
       <style jsx>{`
@@ -18,6 +45,9 @@ export default function Home({ movies }) {
           grid-template-columns: 1fr 1fr;
           padding: 20px;
           gap: 20px;
+        }
+        .movie {
+          cursor: pointer;
         }
         .movie img {
           max-width: 100%;
