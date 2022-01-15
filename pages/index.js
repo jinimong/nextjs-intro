@@ -2,18 +2,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Seo from '../components/Seo';
 
-const IMG_URL = `https://image.tmdb.org/t/p/w500`;
+export const IMG_URL = `https://image.tmdb.org/t/p/w500`;
 
 export default function Home({ movies }) {
   const router = useRouter();
   const handleClick = (id, title) => () => {
-    router.push(
-      {
-        pathname: `/movies/${id}`,
-        query: { title },
-      },
-      `/movies/${id}`
-    );
+    router.push(`/movies/${title}/${id}`);
   };
   return (
     <div className="container">
@@ -28,10 +22,7 @@ export default function Home({ movies }) {
           <h4>
             <Link
               href={{
-                pathname: `/movies/${id}`,
-                query: {
-                  title: original_title,
-                },
+                pathname: `/movies/${original_title}/${id}`,
               }}
             >
               <a>{original_title}</a>
